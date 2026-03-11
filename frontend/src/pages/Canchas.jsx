@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../config'
 
 export default function Canchas() {
   const [canchas, setCanchas] = useState([])
@@ -9,7 +10,7 @@ export default function Canchas() {
   const user = JSON.parse(localStorage.getItem('user') || '{}')
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/canchas')
+    axios.get(`${API_URL}/api/canchas`)
       .then(res => setCanchas(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))

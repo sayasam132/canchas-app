@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../config'
 
 export default function MisReservas() {
   const [reservas, setReservas] = useState([])
@@ -10,7 +11,7 @@ export default function MisReservas() {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/reservas/mis-reservas', {
+    axios.get(`${API_URL}/api/reservas/mis-reservas`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setReservas(res.data))
@@ -21,7 +22,7 @@ export default function MisReservas() {
   const handleCancelar = async (id) => {
     if (!confirm('¿Estás seguro de cancelar esta reserva?')) return
     try {
-      await axios.put(`http://localhost:3000/api/reservas/cancelar/${id}`, {}, {
+      await axios.put(`${API_URL}/api/reservas/cancelar/${id}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setReservas(reservas.map(r => r.id === id ? { ...r, estado: 'cancelada' } : r))

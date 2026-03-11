@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../config'
 
 export default function Reportes() {
   const [reporte, setReporte] = useState(null)
@@ -10,7 +11,7 @@ export default function Reportes() {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/reportes/ingresos', {
+    axios.get(`${API_URL}/api/reportes/ingresos`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setReporte(res.data))
