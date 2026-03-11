@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../config'
 
 export default function Register() {
   const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'usuario' })
@@ -12,7 +13,7 @@ export default function Register() {
     setLoading(true)
     setError('')
     try {
-      await axios.post('http://localhost:3000/api/auth/register', form)
+      await axios.post(`${API_URL}/api/auth/register`, form)
       navigate('/login')
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse')

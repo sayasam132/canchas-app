@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import API_URL from '../config'
 
 export default function Reservar() {
   const { id } = useParams()
@@ -16,7 +17,7 @@ export default function Reservar() {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/canchas/${id}`)
+    axios.get(`${API_URL}/api/canchas/${id}`)
       .then(res => setCancha(res.data))
       .catch(() => navigate('/canchas'))
   }, [id])
@@ -41,7 +42,7 @@ export default function Reservar() {
     setLoading(true)
     setError('')
     try {
-      await axios.post('http://localhost:3000/api/reservas', {
+      await axios.post(`${API_URL}/api/reservas`, {
         cancha_id: id,
         fecha,
         hora_inicio: horaInicio,
