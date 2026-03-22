@@ -77,7 +77,10 @@ export default function MisReservas() {
                   <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'12px'}}>
                     <span style={{background:colores.bg,border:`1px solid ${colores.border}`,color:colores.color,padding:'4px 16px',borderRadius:'20px',fontSize:'13px',fontWeight:'600'}}>{reserva.estado}</span>
                     {reserva.estado !== 'cancelada' && (
+                      <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                      <button onClick={() => handlePagar(reserva)} style={{background:'linear-gradient(135deg,#00d4ff,#0099cc)',border:'none',color:'#fff',padding:'6px 16px',borderRadius:'8px',cursor:'pointer',fontSize:'13px',fontWeight:'600'}}>💳 Pagar</button>
                       <button onClick={() => handleCancelar(reserva.id)} style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',color:'#ff6b6b',padding:'6px 16px',borderRadius:'8px',cursor:'pointer',fontSize:'13px'}}>Cancelar</button>
+                      </div>
                     )}
                   </div>
                 </div>
