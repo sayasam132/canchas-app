@@ -4,6 +4,9 @@ const crearSesionPago = async (req, res) => {
   try {
     const { cancha_nombre, total, reserva_id } = req.body
 
+    console.log('Stripe key:', process.env.STRIPE_SECRET_KEY ? 'OK' : 'NO CARGADA')
+    console.log('Datos:', { cancha_nombre, total, reserva_id })
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{
@@ -24,6 +27,7 @@ const crearSesionPago = async (req, res) => {
 
     res.json({ url: session.url })
   } catch (error) {
+    console.log('Error Stripe:', error.message)
     res.status(500).json({ error: error.message })
   }
 }
