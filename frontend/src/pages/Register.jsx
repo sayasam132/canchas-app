@@ -14,7 +14,13 @@ export default function Register() {
     setError('')
     try {
       await axios.post(`${API_URL}/api/auth/register`, form)
-      navigate('/login')
+      const res = await axios.post(`${API_URL}/api/auth/login`, {
+        email: form.email,
+        password: form.password
+      })
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      navigate('/dashboard')
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse')
     } finally {
@@ -26,13 +32,18 @@ export default function Register() {
       <div style={{background:'rgba(255,255,255,0.05)',borderRadius:'24px',padding:'48px 40px',width:'100%',maxWidth:'400px',display:'flex',flexDirection:'column',alignItems:'center'}}>
         <div style={{fontSize:'48px'}}>⚽</div>
         <h1 style={{color:'#fff',fontSize:'28px',margin:'0 0 4px'}}>CanchasApp</h1>
-        <p style={{color:'rgba(255,255,255,0.5)',marginBottom:'32px'}}>Creá tu cuenta</p>
+        <p style={{color:'rgba(255,255,255,0.5)',marginBottom:'32px'}}>Crea tu cuenta</p>
         {error && <div style={{color:'#ff6b6b',marginBottom:'16px'}}>{error}</div>}
         <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="nombre" placeholder="Nombre completo" value={form.nombre} onChange={handleChange} />
-        <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="email" type="email" placeholder="Correo electrónico" value={form.email} onChange={handleChange} />
-        <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="password" type="password" placeholder="Contraseña" value={form.password} onChange={handleChange} />
+        <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="email" type="email" placeholder="Correo electronico" value={form.email} onChange={handleChange} />
+        <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="password" type="password" placeholder="Contrasena" value={form.password} onChange={handleChange} />
+        <select name="rol" value={form.rol} onChange={handleChange} style={{width:'100%',padding:'14px',marginBottom:'16px',background:'#1a1a2e',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}}>
+          <option value="usuario">Usuario</option>
+          <option value="propietario">Propietario</option>
+          <option value="administrador">Administrador</option>
+        </select>
         <button style={{width:'100%',padding:'14px',background:'linear-gradient(135deg,#00d4ff,#0099cc)',border:'none',borderRadius:'12px',color:'#fff',fontSize:'16px',fontWeight:'600',cursor:'pointer'}} onClick={handleRegister} disabled={loading}>{loading?'Registrando...':'Crear Cuenta'}</button>
-        <p style={{color:'rgba(255,255,255,0.5)',marginTop:'24px'}}>¿Ya tenés cuenta? <Link to="/login" style={{color:'#00d4ff'}}>Iniciá sesión</Link></p>
+        <p style={{color:'rgba(255,255,255,0.5)',marginTop:'24px'}}>Ya tenes cuenta? <Link to="/login" style={{color:'#00d4ff'}}>Inicia sesion</Link></p>
       </div>
     </div>
   )
