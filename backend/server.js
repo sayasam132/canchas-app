@@ -6,6 +6,7 @@ const canchasRoutes = require('./routes/canchas.routes');
 const reservasRoutes = require('./routes/reservas.routes');
 const reportesRoutes = require('./routes/reportes.routes');
 const pagosRoutes = require('./routes/pagos.routes');
+const adminsRoutes = require('./routes/admins.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use('/api/canchas', canchasRoutes);
 app.use('/api/reservas', reservasRoutes);
 app.use('/api/reportes', reportesRoutes);
 app.use('/api/pagos', pagosRoutes);
+app.use('/api/admins', adminsRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Servidor de Canchas App funcionando ✅' });
