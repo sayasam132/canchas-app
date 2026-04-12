@@ -16,11 +16,9 @@ export default function GestionarCanchas() {
     cargarCanchas()
   }, [])
 
-  const cargarCanchas = async () => {
+const cargarCanchas = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/canchas/todas`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await axios.get(`${API_URL}/api/canchas/todas`)
       setCanchas(res.data)
     } catch (err) {
       console.error(err)
