@@ -36,12 +36,7 @@ export default function Register() {
         {error && <div style={{color:'#ff6b6b',marginBottom:'16px'}}>{error}</div>}
         <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="nombre" placeholder="Nombre completo" value={form.nombre} onChange={handleChange} />
         <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="email" type="email" placeholder="Correo electronico" value={form.email} onChange={handleChange} />
-        <input style={{width:'100%',padding:'14px',marginBottom:'16px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="password" type="password" placeholder="Contrasena" value={form.password} onChange={handleChange} />
-        <select name="rol" value={form.rol} onChange={handleChange} style={{width:'100%',padding:'14px',marginBottom:'16px',background:'#1a1a2e',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}}>
-          <option value="usuario">Usuario</option>
-          <option value="propietario">Propietario</option>
-          <option value="administrador">Administrador</option>
-        </select>
+        <input style={{width:'100%',padding:'14px',marginBottom:'24px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'12px',color:'#fff',fontSize:'15px',boxSizing:'border-box'}} name="password" type="password" placeholder="Contrasena" value={form.password} onChange={handleChange} />
         <button style={{width:'100%',padding:'14px',background:'linear-gradient(135deg,#00d4ff,#0099cc)',border:'none',borderRadius:'12px',color:'#fff',fontSize:'16px',fontWeight:'600',cursor:'pointer'}} onClick={handleRegister} disabled={loading}>{loading?'Registrando...':'Crear Cuenta'}</button>
         <p style={{color:'rgba(255,255,255,0.5)',marginTop:'24px'}}>Ya tenes cuenta? <Link to="/login" style={{color:'#00d4ff'}}>Inicia sesion</Link></p>
       </div>
