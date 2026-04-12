@@ -6,11 +6,14 @@ import Canchas from './pages/Canchas'
 import Reservar from './pages/Reservar'
 import MisReservas from './pages/MisReservas'
 import Reportes from './pages/Reportes'
+import PanelPropietario from './pages/PanelPropietario'
 
 function App() {
   const token = localStorage.getItem('token')
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const esAdmin = user.rol === 'administrador' || user.rol === 'propietario'
+  const esPropietario = user.rol === 'propietario'
+
   return (
     <BrowserRouter>
       <Routes>
@@ -22,6 +25,7 @@ function App() {
         <Route path="/reservar/:id" element={<Reservar />} />
         <Route path="/mis-reservas" element={<MisReservas />} />
         <Route path="/reportes" element={token && esAdmin ? <Reportes /> : <Navigate to="/dashboard" />} />
+        <Route path="/panel-propietario" element={token && esPropietario ? <PanelPropietario /> : <Navigate to="/dashboard" />} />
       </Routes>
     </BrowserRouter>
   )
