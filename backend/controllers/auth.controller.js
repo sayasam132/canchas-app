@@ -1,13 +1,12 @@
 const { supabase } = require('../supabase');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const { enviarBienvenida, enviarNotificacionLogin } = require('../services/email.service');
 
 const register = async (req, res) => {
   const { nombre, email, password, rol } = req.body;
 
   try {
-    // Verificar si el usuario ya existe
     const { data: existing } = await supabase
       .from('usuarios')
       .select('*')
@@ -15,19 +14,19 @@ const register = async (req, res) => {
       .single();
 
     if (existing) {
-      return res.status(400).json({ error: 'El email ya está registrado' });
+      return res.status(400).json({ error: 'El email ya esta registrado' });
     }
 
-    // Cifrar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insertar en Supabase
     const { data, error } = await supabase
       .from('usuarios')
       .insert([{ nombre, email, password: hashedPassword, rol: rol || 'usuario' }])
       .select();
 
     if (error) throw error;
+
+    enviarBienvenida(nombre, email);
 
     res.status(201).json({ message: 'Usuario registrado exitosamente', user: data[0] });
   } catch (error) {
@@ -39,7 +38,6 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Buscar usuario
     const { data: user, error } = await supabase
       .from('usuarios')
       .select('*')
@@ -47,21 +45,21 @@ const login = async (req, res) => {
       .single();
 
     if (error || !user) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+      return res.status(401).json({ error: 'Credenciales invalidas' });
     }
 
-    // Verificar contraseña
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(401).json({ error: 'Credenciales inválidas' });
+      return res.status(401).json({ error: 'Credenciales invalidas' });
     }
 
-    // Generar token JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, rol: user.rol },
       'Samysamy132',
       { expiresIn: '24h' }
     );
+
+    enviarNotificacionLogin(user.nombre, user.email);
 
     res.json({ token, user: { id: user.id, nombre: user.nombre, email: user.email, rol: user.rol } });
   } catch (error) {
