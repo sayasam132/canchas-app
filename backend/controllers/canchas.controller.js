@@ -58,4 +58,48 @@ const getHorasOcupadas = async (req, res) => {
   }
 }
 
-module.exports = { getCanchas, getCancha, getHorasOcupadas }
+const crearCancha = async (req, res) => {
+  try {
+    const { nombre, descripcion, tipo, precio_hora } = req.body
+    const { data, error } = await supabase
+      .from('canchas')
+      .insert([{ nombre, descripcion, tipo, precio_hora }])
+      .select()
+    if (error) throw error
+    res.status(201).json(data[0])
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+const editarCancha = async (req, res) => {
+  const { id } = req.params
+  try {
+    const { nombre, descripcion, tipo, precio_hora, disponible } = req.body
+    const { data, error } = await supabase
+      .from('canchas')
+      .update({ nombre, descripcion, tipo, precio_hora, disponible })
+      .eq('id', id)
+      .select()
+    if (error) throw error
+    res.json(data[0])
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+const eliminarCancha = async (req, res) => {
+  const { id } = req.params
+  try {
+    const { error } = await supabase
+      .from('canchas')
+      .delete()
+      .eq('id', id)
+    if (error) throw error
+    res.json({ message: 'Cancha eliminada' })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+module.exports = { getCanchas, getCancha, getHorasOcupadas, crearCancha, editarCancha, eliminarCancha }
