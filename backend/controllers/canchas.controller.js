@@ -101,5 +101,16 @@ const eliminarCancha = async (req, res) => {
     res.status(500).json({ error: error.message })
   }
 }
+const getTodasCanchas = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('canchas')
+      .select('*')
+    if (error) throw error
+    res.json(data)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
 
-module.exports = { getCanchas, getCancha, getHorasOcupadas, crearCancha, editarCancha, eliminarCancha }
+module.exports = { getCanchas, getCancha, getHorasOcupadas, crearCancha, editarCancha, eliminarCancha, getTodasCanchas }
