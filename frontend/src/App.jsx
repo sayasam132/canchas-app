@@ -10,6 +10,7 @@ import PanelPropietario from './pages/PanelPropietario'
 import GestionarCanchas from './pages/GestionarCanchas'
 import GestionarAdmins from './pages/GestionarAdmins'
 import TodasReservas from './pages/TodasReservas'
+import Facturas from './pages/Facturas'
 
 function App() {
   const token = localStorage.getItem('token')
@@ -32,7 +33,8 @@ function App() {
         <Route path="/gestionar-canchas" element={token && esPropietario ? <GestionarCanchas /> : <Navigate to="/dashboard" />} />
         <Route path="/gestionar-admins" element={token && esPropietario ? <GestionarAdmins /> : <Navigate to="/dashboard" />} />
         <Route path="/todas-reservas" element={token && esPropietario ? <TodasReservas /> : <Navigate to="/dashboard" />} />
-      
+        <Route path="/facturas" element={token && esPropietario ? <Facturas /> : <Navigate to="/dashboard" />} />
+        
       </Routes>
     </BrowserRouter>
   )
