@@ -1,10 +1,17 @@
-const { Resend } = require('resend')
-const resend = new Resend(process.env.RESEND_API_KEY)
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  }
+})
 
 const enviarBienvenida = async (nombre, email) => {
   try {
-    await resend.emails.send({
-      from: 'CanchasApp <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `"CanchasApp" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Bienvenido a CanchasApp',
       html: `
@@ -42,8 +49,8 @@ const enviarBienvenida = async (nombre, email) => {
 
 const enviarNotificacionLogin = async (nombre, email) => {
   try {
-    await resend.emails.send({
-      from: 'CanchasApp <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: `"CanchasApp" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Nuevo inicio de sesion en CanchasApp',
       html: `
