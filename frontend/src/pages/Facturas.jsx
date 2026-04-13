@@ -37,6 +37,13 @@ export default function Facturas() {
     return colores[estado] || colores.pendiente
   }
 
+  const tipoPagoColor = (tipo) => {
+    if (tipo === 'tarjeta') return '#00d4ff'
+    if (tipo === 'sinpe') return '#ffc800'
+    if (tipo === 'efectivo') return '#00d464'
+    return 'rgba(255,255,255,0.5)'
+  }
+
   return (
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#1a1a2e,#0f3460)',fontFamily:'Segoe UI'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'20px 40px',background:'rgba(255,255,255,0.05)',borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
@@ -74,7 +81,15 @@ export default function Facturas() {
                     <h3 style={{color:'#fff',fontSize:'16px',fontWeight:'700',marginBottom:'4px'}}>{reserva.canchas?.nombre}</h3>
                     <p style={{color:'rgba(255,255,255,0.7)',fontSize:'13px',marginBottom:'4px'}}>Cliente: {reserva.usuarios?.nombre} - {reserva.usuarios?.email}</p>
                     <p style={{color:'rgba(255,255,255,0.5)',fontSize:'13px',marginBottom:'4px'}}>{reserva.fecha} | {reserva.hora_inicio} - {reserva.hora_fin}</p>
-                    <p style={{color:'#00d4ff',fontWeight:'700',fontSize:'16px'}}>C{Number(reserva.total).toLocaleString()}</p>
+                    <p style={{color:'#00d4ff',fontWeight:'700',fontSize:'16px',marginBottom:'4px'}}>C{Number(reserva.total).toLocaleString()}</p>
+                    {reserva.tipo_pago && (
+                      <p style={{fontSize:'13px',marginBottom:'4px'}}>
+                        Pago: <span style={{color: tipoPagoColor(reserva.tipo_pago), fontWeight:'600'}}>{reserva.tipo_pago}</span>
+                      </p>
+                    )}
+                    {reserva.comprobante_url && (
+                      <a href={reserva.comprobante_url} target="_blank" style={{color:'#ffc800',fontSize:'13px',textDecoration:'none'}}>Ver comprobante SINPE</a>
+                    )}
                   </div>
                   <span style={{background:colores.bg,border:`1px solid ${colores.border}`,color:colores.color,padding:'4px 16px',borderRadius:'20px',fontSize:'13px',fontWeight:'600'}}>{reserva.estado}</span>
                 </div>
