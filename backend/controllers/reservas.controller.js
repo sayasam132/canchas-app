@@ -1,5 +1,19 @@
 const { supabase } = require('../supabase');
 
+const cancelarReservasVencidas = async () => {
+  try {
+    const hace24horas = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    await supabase
+      .from('reservas')
+      .update({ estado: 'cancelada' })
+      .eq('estado', 'confirmada')
+      .is('tipo_pago', null)
+      .lt('created_at', hace24horas)
+  } catch (error) {
+    console.error('Error cancelando reservas vencidas:', error)
+  }
+}
+
 const crearReserva = async (req, res) => {
   const { cancha_id, fecha, hora_inicio, hora_fin, total } = req.body
   const usuario_id = req.user.id
@@ -14,7 +28,7 @@ const crearReserva = async (req, res) => {
       .or(`hora_inicio.lt.${hora_fin},hora_fin.gt.${hora_inicio}`)
 
     if (conflicto && conflicto.length > 0) {
-      return res.status(400).json({ error: 'La cancha ya está reservada en ese horario' })
+      return res.status(400).json({ error: 'La cancha ya esta reservada en ese horario' })
     }
 
     const { data, error } = await supabase
@@ -32,6 +46,7 @@ const crearReserva = async (req, res) => {
 const getMisReservas = async (req, res) => {
   const usuario_id = req.user.id
   try {
+    await cancelarReservasVencidas()
     const { data, error } = await supabase
       .from('reservas')
       .select('*, canchas(nombre, tipo)')
@@ -65,6 +80,7 @@ const cancelarReserva = async (req, res) => {
 
 const getTodasReservas = async (req, res) => {
   try {
+    await cancelarReservasVencidas()
     const { data, error } = await supabase
       .from('reservas')
       .select('*, canchas(nombre, tipo), usuarios(nombre, email)')
